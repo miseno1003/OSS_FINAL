@@ -1,0 +1,26 @@
+services:
+  backend:
+    build: ./back
+    container_name: chicken-backend
+    ports:
+      - "8000:8000"
+    restart: always
+    networks:
+      - app-network
+
+  frontend:
+    build: ./front
+    container_name: chicken-frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - FASTAPI_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
